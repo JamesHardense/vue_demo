@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Vue.js导航菜单</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <form id="app" v-cloak>
+        <h1>Services</h1>
+        <ul>
+            <li v-for="service in services" v-on:click="toggleActive(service)" v-bind:class="{'active':service.active}">
+                {{service.name}}<span>{{service.price | currency}}</span>
+            </li>
+        </ul>
+        <div class="total">
+            Total:<span>{{total() | currency}}</span>
+        </div>
+    </form>
+    <script>
+        Vue.filter('currency', function(value) {
+            return '$' + value.toFixed(2);
+        });
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                services: [{
+                    name: 'Web Development',
+                    price: 300,
+                    active: true
+                }, {
+                    name: 'Design',
+                    price: 400,
+                    active: false
+                }, {
+                    name: 'Integration',
+                    price: 250,
+                    active: false
+                }, {
+                    name: 'Training',
+                    price: 220,
+                    active: false
+                }]
+            },
+            methods: {
+                toggleActive: function(s) {
+                    s.active = !s.active;
+                },
+                total: function() {
+                    var total = 0;
+                    this.services.forEach(function(s) {
+                        if (s.active) {
+                            total += s.price;
+                        }
+                    });
+                    return total;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

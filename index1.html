@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+
+    <title>百度搜索</title>
+    <style>
+        .gray {
+            background: darkgray;
+        }
+    </style>
+</head>
+<script src="vue1.0.js"></script>
+<script src="vue-resource.js"></script>
+
+<body>
+    <div id="box">
+        <input type="text" name="" @keyup="get($event)" v-model="its" @keydown.down.prevent="changedown()" @keydown.up.prevent="changeup()">
+        <ul>
+            <li v-for="(index,value) in mydata" :class="{gray:index==nowIndex}">
+                {{value}}
+            </li>
+            <p v-show="mydata.length==0">暂无数据...</p>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        new Vue({
+                el: '#box',
+                data: {
+                    mydata: [],
+                    its: '',
+                    nowIndex: -1
+                },
+                methods: {
+                    get: function(ev) {
+                        if (ev.keyCode == 13) {
+                            window.open('https://sp0.baidu.com/s?wd=' + this.its)
+                        }
+                        if (ev.keyCode == 38 || ev.keyCode == 40) {
+                            return;
+                        }
+                        this.$http.jsonp('https:' +
+                            '//sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su', {
+                                wd: this.its
+                            }, {
+                                jsonp: 'cb'
+                            }).then(function(res) {
+                            this.mydata = res.data.s
+                        }, function(req) {
+                            alert(req.status)
+                        })
+                    },
+                    changedown: function() {
+                        this.nowIndex++;
+                        if (this.nowIndex == this.mydata.length) {
+                            this.nowIndex = -1;
+                        }
+                        this.its = this.mydata[this.nowIndex]
+                    },
+                    changeup: function() {
+                        this.nowIndex--;
+                        if (this.nowIndex == -2) {
+                            this.nowIndex = this.mydata.length - 1;
+                        }
+                        this.its = this.mydata[this.nowIndex]
+                    }
+                }
+            })
+            // https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=a&cb=jshow
+            //    https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=a&sugmode=2&json=1&p=3&sid=1448_21116_17001_25227_25178_22074&req=2&bs=a&csor=1&cb=jQuery110202944792992942089_1513421964350&_=1513421964352
+            //    https://sp1.baidu.com/5b11fzupBgM18t7jm9iCKT-xh_/sensearch?wd=
+    </script>
+</body>
+
+</html>

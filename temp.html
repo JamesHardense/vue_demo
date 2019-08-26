@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <script>
+        function getValue(id) {
+            return document.getElementById(id).value;
+        }
+
+        function setValue(id, value) {
+            document.getElementById(id).value = value;
+        }
+
+        function sortByWord() {
+            var text1 = getValue("text1");
+            var a = text1.split("");
+            a.sort();
+            var text2 = a.join("");
+            setValue("text2", text2);
+            a.reverse();
+            var text3 = a.join("");
+            setValue("text3", text3);
+        }
+
+        function sortByAlpha() {
+            var text1 = getValue("text1");
+            var a = new Array();
+            for (var i = 0; i < text1.length; i++) {
+                var c = text1.charAt(i);
+                a.push(c)
+            }
+            a.sort();
+            var text2 = a.join("");
+            setValue("text2", text2);
+            a.reverse();
+            var text3 = a.join("");
+            setValue("text3", text3);
+        }
+    </script>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>随机输入英文字符串</td>
+            <td><input type="text" id="text1"></td>
+        </tr>
+        <tr>
+            <td>正排序结果：</td>
+            <td><input type="text" id="text2"></td>
+        </tr>
+        <tr>
+            <td>倒排序结果</td>
+            <td><input type="text" id="text3"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" id="button1" value="按照字母排序" onclick="sortByAlpha()">
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" id="button2" value="按照单词排序" onclick="sortByWord()"></td>
+        </tr>
+    </table>
+
+
+</body>
+
+</html>
